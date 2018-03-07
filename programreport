@@ -1,9 +1,4 @@
 
-Group Members: Team 22
-Asritha Chowdary Chunduri (1213377280)
-Pavan Kumar Linga (1213267638)
-
-
 1) As implemented, the methods used for lighting the LED ring using HRTimer and ndelay(), the delay obtained is more than the 
    required delay to be detected by WS2812 driver inorder to make High(1) and Low(0).
 
