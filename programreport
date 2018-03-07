@@ -1,0 +1,22 @@
+
+Group Members: Team 22
+Asritha Chowdary Chunduri (1213377280)
+Pavan Kumar Linga (1213267638)
+
+
+1) As implemented, the methods used for lighting the LED ring using HRTimer and ndelay(), the delay obtained is more than the 
+   required delay to be detected by WS2812 driver inorder to make High(1) and Low(0).
+
+2) The delays required by the WS2812 driver to detect them as 1 or 0 is 
+   for 1 - TH= 700ns (since asynchronous)
+           TL= 600ns
+   for 0 - TH = 350ns
+           TL = 850ns
+
+3) In general the time for the instruction gpio_set_value_cansleep() to be executed is more than 400ns, but to make low WS2812 driver
+   the duration of the high pulse is 350ns which is less than that created using intermediate instrcution to set the gpio pin high.
+
+4) Even by changing the delay for TH(high) and TL(low) required by the WS2812 to be detected as 1 or 0, in units of 50 the timing is not met.
+
+5) Similarly the time taken for the instructions executed between the two delays high and low, are more than required 
+   which results in timing of the WS2812 not met.

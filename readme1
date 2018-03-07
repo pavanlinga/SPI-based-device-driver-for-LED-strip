@@ -1,0 +1,84 @@
+####################################################
+Description
+####################################################
+-This project is aimed to drive the WS2812 LED strip using SPI communication. SPI based device driver is developed to initialise the SPI bus with the required attributes 
+ such as bits per word, bus number, max speed. 
+-After insmod of the device file and the driver file, if they match, probe function gets initialised and required attributes are set and waits for the user data.
+-User test program is created to transmit the pixel data to the LED strip via SPI bus. 
+-Comparative timing analysis of the ndelay and the hrtimer is performed.
+
+####################################################
+
+
+16 LED ring, each integrated by WS2812 drivers for which a Linux kernel module is developed as a SPI based device driver to drive the WS2812 driver and light the leds. 
+To check the functionality of the driver module a user program is developed with inputs as RGB values, and passing them to driver module.
+
+The kernel version used is 3.19.8
+      
+       Execution: . Connect the Intel galileo gen 2 board and open putty by typing in putty in the terminal.
+
+                  . Find the ip address of the host using command "ifconfig" and findout the ethernet connection.
+                    change the ip address of the host using the command "ifconfig eno1 192.168.1.6 netmask 255.255.0.0"
+
+                  . Configure the putty by setting the serial baud rate 115200 and serial line to /dev/ttyUSB0
+      
+                  . Find the ip address of the board using command "ifconfig" and findout the ethernet connection.
+                    change the ip address of the host using the command "ifconfig (ethernet connection port) 192.168.1.5 netmask 255.255.0.0"
+
+      PART1(SPI Device Driver):
+
+                  . Run the Makefile present in assig3_part1 folder using the command "$make"
+                
+                  . It creates '.ko files' of the WS2812_driver,WS2812_device and executable.
+                     Then send the following following modules using respective commands
+                      ws2812_device.ko module: "$ scp ws2812_device.ko root@192.168.1.5:/home" 
+                      ws2812_driver.ko module: "$ scp ws2812_driver.ko root@192.168.1.5:/home"
+                      User space interface program: "$ scp user_spi.c root@192.168.1.5:/home"
+                      executable  :"$ scp user root@192.168.1.5:/home" 
+                     
+                  . insert the ws2812_device.ko file into the board's kernel using the command "$ insmod ws2812_device.ko" 
+                       and the ws2812_driver.ko file using "$ insmod ws2812_driver.ko"
+     
+     User space /dev Interface:
+      
+                  . Now compile the  executable using the command 
+                      "$ ./run" in the serial monitor.
+
+                  . We can see the following appearing on the terminal to reset the SPI
+                    Mode_0 --> 0
+	            Mode_1 --> 1
+	            Mode_2 --> 2
+	            Mode_3 --> 3
+                    Enter the SPI OPeration Mode:
+                  
+                  . By entering the spi mode,the driver module gets compiled and the the LED strip is light as 
+                    per the data received from the user.
+
+     PART2(Bitbanging approach):
+                 HRTIMER:
+
+                  . Run the Makefile present in assig3_part2_ndelay folder using the command "$make"
+                
+                  . It creates '.ko files' of the bitbang.ko
+                     Then send the following following modules using respective commands
+                      bitbang.ko module: "$ scp bitbang.ko root@192.168.1.5:/home"
+                     
+                  . insert the bitbang.ko into the board's kernel using the command "$ insmod bitbang.ko" 
+                       
+                ndelay:
+
+                  . Run the Makefile present in assignment3_part2_hrtimer folder using the command "$make"
+                
+                  . It creates '.ko files' of the bitbang_hrtimer.ko
+                     Then send the following following modules using respective commands
+                      bitbang_hrtimer.ko module: "$ scp bitbang_hrtimer.ko root@192.168.1.5:/home"
+                     
+                  . insert the bitbang_hrtimer.ko into the board's kernel using the command "$ insmod bitbang_hrtimer.ko"   
+     
+     
+
+                 
+
+                  
+      
+ 
